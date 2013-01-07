@@ -2,11 +2,14 @@
 #define UBLOX_h
 
 #include <Arduino.h>
-#include <SerialPort.h>
 
 #define ToRad(x) ((x)*0.01745329252)  // *pi/180
 #define ToDeg(x) ((x)*57.2957795131)  // *180/pi
 #define PORTNUMBER 3
+#define PI_FLOAT     3.14159265f
+#define PIBY2_FLOAT  1.5707963f
+#define GPSPort Serial3
+
 
 typedef union{
   struct{
@@ -33,23 +36,26 @@ typedef union{
 GPS_Union_t;
 
 class UBLOX{
-	public:
-		void init(void);
-		void Heading(int32_t*,int32_t*,int32_t*,int32_t*,float*);
-		void Distance(int32_t*,int32_t*,int32_t*,int32_t*,float*);
-		void Monitor(void);
-		GPS_Union_t data;
-		boolean newData;
-	private:
-		SerialPort<PORTNUMBER,255,255> GPSPort;
-		uint8_t GPSState;
-		int i;
-		byte inByte;
-		float dLon;
-		float dLat;
-		float x;
-		float y;
-		float lat1_f;
-		float lat2_f;
+public:
+  void init(void);
+  void Heading(int32_t*,int32_t*,int32_t*,int32_t*,float*);
+  void Distance(int32_t*,int32_t*,int32_t*,int32_t*,float*);
+  void Monitor(void);
+  GPS_Union_t data;
+  boolean newData;
+private:
+  //SerialPort<PORTNUMBER,255,255> GPSPort;
+  float fastAtan2( float y, float x);
+  uint8_t GPSState;
+  int i;
+  byte inByte;
+  float dLon;
+  float dLat;
+  float x;
+  float y;
+  float lat1_f;
+  float lat2_f;
+  uint8_t lengthIndex,dataIndex;
+
 };
 #endif

@@ -1,10 +1,8 @@
-#include <SerialPort.h>
 #include <UBLOX.h>
-#include <Streaming.h>
 
 UBLOX gps;
 
-SerialPort<0,128,128> debug;
+#define debug Serial
 
 byte inByte;
 float heading,distance;
@@ -22,6 +20,16 @@ void loop(){
     gps.newData = false;
     gps.Heading(&gps.data.vars.lat,&gps.data.vars.lon,&latDest,&lonDest,&heading);
     gps.Distance(&gps.data.vars.lat,&gps.data.vars.lon,&latDest,&lonDest,&distance);
-    debug << gps.data.vars.gpsFix << ","<< gps.data.vars.lat <<","<< gps.data.vars.lon << "," << gps.data.vars.height << "," << heading << "," << distance <<"\r\n";
+    debug.print(gps.data.vars.gpsFix);
+    debug.print(",");
+    debug.print(gps.data.vars.lat);
+    debug.print(",");
+    debug.print(gps.data.vars.lon);
+    debug.print(",");
+    debug.print(gps.data.vars.height);
+    debug.print(",");
+    debug.print(heading);
+    debug.print(",");
+    debug.println(distance);
   }
 }
